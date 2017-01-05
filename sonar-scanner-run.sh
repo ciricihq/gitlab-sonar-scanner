@@ -12,6 +12,10 @@ else
     COMMAND="$COMMAND -Dsonar.projectVersion=\"$SONAR_PROJECT_VERSION\""
   fi
 
+  if [ ! -z "$SONAR_GITLAB_PROJECT_ID" ]; then
+    COMMAND="$COMMAND -Dsonar.gitlab.project_id=\"$SONAR_GITLAB_PROJECT_ID\""
+  fi
+
   if [ ! -z "$SONAR_PROJECT_NAME" ]; then
     COMMAND="$COMMAND -Dsonar.projectName=\"$SONAR_PROJECT_NAME\""
   fi

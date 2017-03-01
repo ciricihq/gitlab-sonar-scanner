@@ -11,7 +11,19 @@ else
   if [ ! -z "$SONAR_PROJECT_VERSION" ]; then
     COMMAND="$COMMAND -Dsonar.projectVersion=\"$SONAR_PROJECT_VERSION\""
   fi
+  
+  if [ ! -z "$SONAR_DEBUG" ]; then
+    COMMAND="$COMMAND -X"
+  fi
 
+  if [ ! -z "$SONAR_SOURCES" ]; then
+    COMMAND="$COMMAND -Dsonar.sources=\"$SONAR_SOURCES\""
+  fi
+
+  if [ ! -z "$SONAR_PROFILE" ]; then
+    COMMAND="$COMMAND -Dsonar.profile=\"$SONAR_PROFILE\""
+  fi
+  
   if [ ! -z "$SONAR_GITLAB_PROJECT_ID" ]; then
     COMMAND="$COMMAND -Dsonar.gitlab.project_id=\"$SONAR_GITLAB_PROJECT_ID\""
   fi

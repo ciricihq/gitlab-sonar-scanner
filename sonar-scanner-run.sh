@@ -31,6 +31,10 @@ else
   if [ ! -z "$SONAR_LANGUAGE" ]; then
     COMMAND="$COMMAND -Dsonar.language=\"$SONAR_LANGUAGE\""
   fi
+  
+  if [ ! -z "$SONAR_ENCODING" ]; then
+    COMMAND="$COMMAND -Dsonar.sourceEncoding=\"$SONAR_ENCODING\""
+  fi
 
   if [ ! -z "$SONAR_PROJECT_NAME" ]; then
     COMMAND="$COMMAND -Dsonar.projectName=\"$SONAR_PROJECT_NAME\""

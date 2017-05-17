@@ -1,12 +1,15 @@
 #!/bin/sh
 
 URL=$SONAR_URL
-SONAR_TOKEN=$SONAR_TOKEN
 
 if [ -z "$SONAR_PROJECT_KEY" ]; then
   echo "Undefined \"projectKey\"" && exit 1
 else
   COMMAND="sonar-scanner -Dsonar.host.url=\"$URL\" -Dsonar.projectKey=\"$SONAR_PROJECT_KEY\""
+  
+  if [ ! -z "$SONAR_TOKEN" ]; then
+    COMMAND="$COMMAND -Dsonar.login=\"$SONAR_TOKEN\""
+  fi
 
   if [ ! -z "$SONAR_PROJECT_VERSION" ]; then
     COMMAND="$COMMAND -Dsonar.projectVersion=\"$SONAR_PROJECT_VERSION\""

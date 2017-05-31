@@ -1,4 +1,4 @@
-FROM java:alpine
+FROM openjdk:8-jdk-alpine
 ## Based on this example http://stackoverflow.com/a/40612088/865222
 ENV SONAR_SCANNER_VERSION 2.8
 

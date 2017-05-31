@@ -1,6 +1,8 @@
 gitlab-sonar-scanner
 ====================
 
+[![pulls][docker hub svg]][docker hub]
+
 Container to be used with [sonar gitlab plugin][].
 
 Using it in your gitlab projects
@@ -106,3 +108,6 @@ Can be checked in the official documentation: https://docs.sonarqube.org/display
 
 [sonar gitlab plugin]: https://github.com/gabrie-allaigre/sonar-gitlab-plugin
 [variables]: https://docs.gitlab.com/ce/ci/variables
+[docker hub]: https://hub.docker.com/r/ciricihq/gitlab-sonar-scanner
+
+[docker hub svg]: https://img.shields.io/docker/pulls/ciricihq/gitlab-sonar-scanner.svg

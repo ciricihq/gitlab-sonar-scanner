@@ -1,6 +1,10 @@
-# gitlab-sonar-scanner
+gitlab-sonar-scanner
+====================
 
-## Using in your gitlab projects
+Container to be used with [sonar gitlab plugin][].
+
+Using it in your gitlab projects
+--------------------------------
 
 Add the next stage to your `.gitlab-ci.yml`.
 
@@ -11,36 +15,94 @@ stages:
 sonarqube:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
-  dependencies:
-  - test
   variables:
     SONAR_URL: "http://your-gocd-server:9000"
-    SONAR_PROJECT_KEY: "your-project-key"
-    SONAR_PROJECT_NAME: "$CI_PROJECT_NAME"
     SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "issues"
   script:
   - /usr/bin/sonar-scanner-run.sh
 ```
 
-You should have analysed the project by hand before to create it in your sonarqube server.
+Before running the analysis stage you should ensure to have the project created
+in your sonarqube + having it configured to use the gitlab plugin (specifying the
+gitlab repo url).
+
+You also need to give developer permissions to the user that will comment in gitlab.
+
+### Sending the data to sonar
+
+The previous stage will play along the gitlab plugin to publish all the coments
+in it, but if you wanna send the analysis reports to sonar, you should change two
+things:
+
+~~~yaml
+stages:
+- analysis
+
+sonarqube-reports:
+  stage: analysis
+  image: ciricihq/gitlab-sonar-scanner
+  variables:
+    SONAR_URL: "http://your-gocd-server:9000"
+    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
+    SONAR_ANALYSIS_MODE: "publish"
+  script:
+  - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+~~~
+
+Note how we've changed from `issues` to `publish` in `SONAR_ANALYSIS_MODE` +
+we've added `unset CI_BUILD_REF &&` before the `sonar-sacnner-run.sh` command.
+
+Unsetting the `CI_BUILD_REF` before running the scanner will disable the gitlab
+plugin and thus allow you to publish the results to sonarqube.
+
+### Full .gitlab-ci.yaml with preview + publish
+
+~~~yaml
+stages:
+- analysis
+
+sonarqube:
+  stage: analysis
+  image: ciricihq/gitlab-sonar-scanner
+  variables:
+    SONAR_URL: "http://your-gocd-server:9000"
+    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
+    SONAR_ANALYSIS_MODE: "issues"
+  script:
+  - /usr/bin/sonar-scanner-run.sh
+
+sonarqube-reports:
+  stage: analysis
+  image: ciricihq/gitlab-sonar-scanner
+  variables:
+    SONAR_URL: "http://your-gocd-server:9000"
+    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
+    SONAR_ANALYSIS_MODE: "publish"
+  script:
+  - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+~~~
 
 ## Available environment variables
 
 Can be checked in the official documentation: https://docs.sonarqube.org/display/SONARQUBE43/Analysis+Parameters
 
-- SONAR__URL
-- SONAR_PROJECT_VERSION
-- SONAR_DEBUG
-- SONAR_SOURCES
-- SONAR_PROFILE
-- SONAR_LANGUAGE
-- SONAR_PROJECT_NAME
-- SONAR_BRANCH
-- SONAR_ANALYSIS_MODE
+- `SONAR_URL`
+- `SONAR_PROJECT_VERSION`
+- `SONAR_DEBUG`
+- `SONAR_SOURCES`
+- `SONAR_PROFILE`
+- `SONAR_LANGUAGE`
+- `SONAR_PROJECT_NAME`
+- `SONAR_BRANCH`
+- `SONAR_ANALYSIS_MODE`
 
 ### sonar-gitlab specific
 
-- SONAR_GITLAB_PROJECT_ID: The unique id, path with namespace, name with namespace, web url, ssh url or http url of the current project that GitLab.
-- CI_BUILD_REF
-- CI_BUILD_REF_NAME
+- `SONAR_GITLAB_PROJECT_ID`: The unique id, path with namespace, name with namespace,
+  web url, ssh url or http url of the current project that GitLab.
+- `CI_BUILD_REF`: See [ci/variables][variables]
+- `CI_BUILD_REF_NAME`: See [ci/variables][variables]
+
+[sonar gitlab plugin]: https://github.com/gabrie-allaigre/sonar-gitlab-plugin
+[variables]: https://docs.gitlab.com/ce/ci/variables

@@ -8,6 +8,10 @@ URL=$SONAR_URL
 
 COMMAND="sonar-scanner -Dsonar.host.url=$URL"
 
+if [ ! -z "$SONAR_PROJECT_KEY" ]; then
+  COMMAND="$COMMAND -Dsonar.projectKey=$SONAR_PROJECT_KEY"
+fi
+
 if [ ! -z "$SONAR_TOKEN" ]; then
   COMMAND="$COMMAND -Dsonar.login=$SONAR_TOKEN"
 fi

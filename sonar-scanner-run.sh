@@ -62,6 +62,9 @@ if [ ! -z $SONAR_ANALYSIS_MODE ]; then
   if [ $SONAR_ANALYSIS_MODE="preview" ]; then
     COMMAND="$COMMAND -Dsonar.issuesReport.console.enable=true"
   fi
+  if [ $SONAR_ANALYSIS_MODE="publish" ]; then
+    unset CI_BUILD_REF
+  fi
 fi
 
 $COMMAND

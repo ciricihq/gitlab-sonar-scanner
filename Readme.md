@@ -49,14 +49,10 @@ sonarqube-reports:
     SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "publish"
   script:
-  - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+  - /usr/bin/sonar-scanner-run.sh
 ~~~
 
-Note how we've changed from `issues` to `publish` in `SONAR_ANALYSIS_MODE` +
-we've added `unset CI_BUILD_REF &&` before the `sonar-sacnner-run.sh` command.
-
-Unsetting the `CI_BUILD_REF` before running the scanner will disable the gitlab
-plugin and thus allow you to publish the results to sonarqube.
+Note how we've changed from `issues` to `publish` in `SONAR_ANALYSIS_MODE`.
 
 ### Full .gitlab-ci.yaml with preview + publish
 
@@ -82,7 +78,7 @@ sonarqube-reports:
     SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "publish"
   script:
-  - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+  - /usr/bin/sonar-scanner-run.sh
 ~~~
 
 ## Available environment variables

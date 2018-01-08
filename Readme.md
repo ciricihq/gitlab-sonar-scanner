@@ -18,7 +18,7 @@ sonarqube:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your-gocd-server:9000"
+    SONAR_URL: "http://your.sonarqube.server:9000"
     SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "issues"
   script:
@@ -45,7 +45,7 @@ sonarqube-reports:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your-gocd-server:9000"
+    SONAR_URL: "http://your.sonarqube.server:9000"
     SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "publish"
   script:
@@ -68,7 +68,7 @@ sonarqube:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your-gocd-server:9000"
+    SONAR_URL: "http://your.sonarqube.server:9000"
     SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "issues"
   script:
@@ -78,7 +78,7 @@ sonarqube-reports:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your-gocd-server:9000"
+    SONAR_URL: "http://your.sonarqube.server:9000"
     SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "publish"
   script:

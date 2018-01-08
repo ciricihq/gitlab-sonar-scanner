@@ -68,6 +68,10 @@ if [ ! -z $SONAR_BRANCH ]; then
   COMMAND="$COMMAND -Dsonar.branch=$SONAR_BRANCH"
 fi
 
+if [ -z ${SONAR_ANALYSIS_MODE+x} ]; then
+  SONAR_ANALYSIS_MODE="preview"
+fi
+
 # `analysis by default
 if [ ! -z $SONAR_ANALYSIS_MODE ]; then
   COMMAND="$COMMAND -Dsonar.analysis.mode=$SONAR_ANALYSIS_MODE"

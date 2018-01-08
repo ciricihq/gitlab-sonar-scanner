@@ -19,7 +19,6 @@ sonarqube:
   image: ciricihq/gitlab-sonar-scanner
   variables:
     SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "issues"
   script:
   - /usr/bin/sonar-scanner-run.sh
@@ -30,7 +29,6 @@ Remember to also create a `sonar-project.properties` file:
 ~~~conf
 sonar.projectKey=your-project-key
 sonar.exclusions=node_modules/**,coverage/**
-sonar.projectVersion=1.0
 
 sonar.sources=.
 
@@ -58,7 +56,6 @@ sonarqube-reports:
   image: ciricihq/gitlab-sonar-scanner
   variables:
     SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "publish"
   script:
   - /usr/bin/sonar-scanner-run.sh
@@ -77,7 +74,6 @@ sonarqube:
   image: ciricihq/gitlab-sonar-scanner
   variables:
     SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "issues"
   script:
   - /usr/bin/sonar-scanner-run.sh
@@ -87,7 +83,6 @@ sonarqube-reports:
   image: ciricihq/gitlab-sonar-scanner
   variables:
     SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
     SONAR_ANALYSIS_MODE: "publish"
   script:
   - /usr/bin/sonar-scanner-run.sh

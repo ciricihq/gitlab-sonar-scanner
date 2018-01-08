@@ -25,6 +25,18 @@ sonarqube:
   - /usr/bin/sonar-scanner-run.sh
 ```
 
+Remember to also create a `sonar-project.properties` file:
+
+~~~conf
+sonar.projectKey=your-project-key
+sonar.exclusions=node_modules/**,coverage/**
+sonar.projectVersion=1.0
+
+sonar.sources=.
+
+sonar.gitlab.project_id=git@your-git-repo.git
+~~~
+
 Before running the analysis stage you should ensure to have the project created
 in your sonarqube + having it configured to use the gitlab plugin (specifying the
 gitlab repo url).

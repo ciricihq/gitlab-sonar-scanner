@@ -6,7 +6,7 @@ fi
 
 URL=$SONAR_URL
 
-COMMAND="sonar-scanner -Dsonar.host.url=$URL"
+COMMAND="sonar-scanner -Dsonar.host.url=$URL -Dsonar.gitlab.failure_notification_mode=exit-code"
 
 if [ ! -z "$SONAR_PROJECT_KEY" ]; then
   COMMAND="$COMMAND -Dsonar.projectKey=$SONAR_PROJECT_KEY"

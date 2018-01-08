@@ -8,6 +8,18 @@ URL=$SONAR_URL
 
 COMMAND="sonar-scanner -Dsonar.host.url=$URL -Dsonar.gitlab.failure_notification_mode=exit-code"
 
+if [ -z ${SONAR_PROJECT_KEY+x} ]; then
+  SONAR_PROJECT_KEY=$CI_PROJECT_NAME
+fi
+
+if [ -z ${SONAR_PROJECT_VERSION+x} ]; then
+  SONAR_PROJECT_VERSION=$CI_BUILD_ID
+fi
+
+if [ -z ${SONAR_GITLAB_PROJECT_ID+x} ]; then
+  SONAR_GITLAB_PROJECT_ID=$CI_PROJECT_ID
+fi
+
 if [ ! -z "$SONAR_PROJECT_KEY" ]; then
   COMMAND="$COMMAND -Dsonar.projectKey=$SONAR_PROJECT_KEY"
 fi

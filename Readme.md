@@ -10,7 +10,7 @@ Using it in your gitlab projects
 
 Add the next stage to your `.gitlab-ci.yml`.
 
-```yaml
+~~~yaml
 stages:
 - analysis
 
@@ -22,7 +22,7 @@ sonarqube:
     SONAR_ANALYSIS_MODE: "issues"
   script:
   - /usr/bin/sonar-scanner-run.sh
-```
+~~~
 
 Remember to also create a `sonar-project.properties` file:
 
@@ -88,7 +88,8 @@ sonarqube-reports:
   - /usr/bin/sonar-scanner-run.sh
 ~~~
 
-## Available environment variables
+Available environment variables
+-------------------------------
 
 Can be checked in the official documentation: https://docs.sonarqube.org/display/SONARQUBE43/Analysis+Parameters
 

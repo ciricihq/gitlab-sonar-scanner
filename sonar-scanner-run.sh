@@ -1,12 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-if [ -z "$SONAR_URL" ]; then
+if [ -z ${SONAR_URL+x} ]; then
   echo "Undefined \"SONAR_URL\" env" && exit 1
 fi
 
 URL=$SONAR_URL
 
-COMMAND="sonar-scanner -Dsonar.host.url=$URL -Dsonar.gitlab.failure_notification_mode=exit-code"
+COMMAND="sonar-scanner -Dsonar.host.url=$URL"
 
 if [ -z ${SONAR_PROJECT_KEY+x} ]; then
   SONAR_PROJECT_KEY=$CI_PROJECT_NAME
@@ -44,10 +44,6 @@ if [ ! -z ${SONAR_PROFILE+x} ]; then
   COMMAND="$COMMAND -Dsonar.profile=$SONAR_PROFILE"
 fi
 
-if [ ! -z ${SONAR_GITLAB_PROJECT_ID+x} ]; then
-  COMMAND="$COMMAND -Dsonar.gitlab.project_id=$SONAR_GITLAB_PROJECT_ID"
-fi
-
 if [ ! -z ${SONAR_LANGUAGE+x} ]; then
   COMMAND="$COMMAND -Dsonar.language=$SONAR_LANGUAGE"
 fi
@@ -56,31 +52,34 @@ if [ ! -z ${SONAR_ENCODING+x} ]; then
   COMMAND="$COMMAND -Dsonar.sourceEncoding=$SONAR_ENCODING"
 fi
 
-if [ ! -z ${CI_BUILD_REF+x} ]; then
-  COMMAND="$COMMAND -Dsonar.gitlab.commit_sha=$CI_BUILD_REF"
-fi
-
-if [ ! -z ${CI_BUILD_REF_NAME+x} ]; then
-  COMMAND="$COMMAND -Dsonar.gitlab.ref_name=$CI_BUILD_REF_NAME"
-fi
-
 if [ ! -z ${SONAR_BRANCH+x} ]; then
   COMMAND="$COMMAND -Dsonar.branch=$SONAR_BRANCH"
 fi
 
+# analysis by default
 if [ -z ${SONAR_ANALYSIS_MODE+x} ]; then
   SONAR_ANALYSIS_MODE="preview"
 fi
 
-# `analysis by default
-if [ ! -z ${SONAR_ANALYSIS_MODE+x} ]; then
-  COMMAND="$COMMAND -Dsonar.analysis.mode=$SONAR_ANALYSIS_MODE"
-  if [ $SONAR_ANALYSIS_MODE="preview" ]; then
-    COMMAND="$COMMAND -Dsonar.issuesReport.console.enable=true"
+COMMAND="$COMMAND -Dsonar.analysis.mode=$SONAR_ANALYSIS_MODE"
+if [ $SONAR_ANALYSIS_MODE == "preview" ]; then
+  COMMAND="$COMMAND -Dsonar.issuesReport.console.enable=true"
+  COMMAND="$COMMAND -Dsonar.gitlab.failure_notification_mode=exit-code"
+
+  if [ ! -z ${SONAR_GITLAB_PROJECT_ID+x} ]; then
+    COMMAND="$COMMAND -Dsonar.gitlab.project_id=$SONAR_GITLAB_PROJECT_ID"
   fi
-  if [ $SONAR_ANALYSIS_MODE="publish" ]; then
-    unset CI_BUILD_REF
+
+  if [ ! -z ${CI_BUILD_REF+x} ]; then
+    COMMAND="$COMMAND -Dsonar.gitlab.commit_sha=$CI_BUILD_REF"
   fi
+
+  if [ ! -z ${CI_BUILD_REF_NAME+x} ]; then
+    COMMAND="$COMMAND -Dsonar.gitlab.ref_name=$CI_BUILD_REF_NAME"
+  fi
+fi
+if [ $SONAR_ANALYSIS_MODE == "publish" ]; then
+  unset CI_BUILD_REF
 fi
 
 $COMMAND

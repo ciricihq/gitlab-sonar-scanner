@@ -110,6 +110,21 @@ Can be checked in the official documentation: https://docs.sonarqube.org/display
 - `CI_BUILD_REF`: See [ci/variables][variables]
 - `CI_BUILD_REF_NAME`: See [ci/variables][variables]
 
+### Defining custom sonar-scanner options
+
+You can pass any additional option to the `gitlab-sonar-scanner` binnary, if needed:
+
+~~~yaml
+sonarqube-reports:
+  image: ciricihq/gitlab-sonar-scanner
+  variables:
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: publish
+  script:
+  - sonar-gitlab-scanner -Dsonar.custom.param=whatever -Dsonar.custom.param2=whichever
+~~~
+
+
 LICENSE
 =======
 

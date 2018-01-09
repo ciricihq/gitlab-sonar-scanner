@@ -18,10 +18,10 @@ sonarqube:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_ANALYSIS_MODE: "issues"
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: issues
   script:
-  - /usr/bin/sonar-scanner-run.sh
+  - gitlab-sonar-scanner
 ~~~
 
 Remember to also create a `sonar-project.properties` file:
@@ -55,10 +55,10 @@ sonarqube-reports:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_ANALYSIS_MODE: "publish"
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: publish
   script:
-  - /usr/bin/sonar-scanner-run.sh
+  - gitlab-sonar-scanner
 ~~~
 
 Note how we've changed from `issues` to `publish` in `SONAR_ANALYSIS_MODE`.
@@ -73,19 +73,19 @@ sonarqube:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_ANALYSIS_MODE: "issues"
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: issues
   script:
-  - /usr/bin/sonar-scanner-run.sh
+  - sonar-gitlab-scanner
 
 sonarqube-reports:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_ANALYSIS_MODE: "publish"
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: publish
   script:
-  - /usr/bin/sonar-scanner-run.sh
+  - sonar-gitlab-scanner
 ~~~
 
 Available environment variables

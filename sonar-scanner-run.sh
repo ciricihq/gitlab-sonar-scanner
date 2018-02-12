@@ -20,10 +20,6 @@ if [ -z ${SONAR_GITLAB_PROJECT_ID+x} ]; then
   SONAR_GITLAB_PROJECT_ID=$CI_PROJECT_ID
 fi
 
-if [ ! -z ${SONAR_PROJECT_KEY+x} ]; then
-  COMMAND="$COMMAND -Dsonar.projectKey=$SONAR_PROJECT_KEY"
-fi
-
 if [ ! -z ${SONAR_TOKEN+x} ]; then
   COMMAND="$COMMAND -Dsonar.login=$SONAR_TOKEN"
 fi

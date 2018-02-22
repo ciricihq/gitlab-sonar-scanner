@@ -10,7 +10,7 @@ Using it in your gitlab projects
 
 Add the next stage to your `.gitlab-ci.yml`.
 
-```yaml
+~~~yaml
 stages:
 - analysis
 
@@ -18,12 +18,22 @@ sonarqube:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
-    SONAR_ANALYSIS_MODE: "issues"
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: issues
   script:
-  - /usr/bin/sonar-scanner-run.sh
-```
+  - gitlab-sonar-scanner
+~~~
+
+Remember to also create a `sonar-project.properties` file:
+
+~~~conf
+sonar.projectKey=your-project-key
+sonar.exclusions=node_modules/**,coverage/**
+
+sonar.sources=.
+
+sonar.gitlab.project_id=git@your-git-repo.git
+~~~
 
 Before running the analysis stage you should ensure to have the project created
 in your sonarqube + having it configured to use the gitlab plugin (specifying the
@@ -45,18 +55,13 @@ sonarqube-reports:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
-    SONAR_ANALYSIS_MODE: "publish"
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: publish
   script:
-  - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+  - gitlab-sonar-scanner
 ~~~
 
-Note how we've changed from `issues` to `publish` in `SONAR_ANALYSIS_MODE` +
-we've added `unset CI_BUILD_REF &&` before the `sonar-sacnner-run.sh` command.
-
-Unsetting the `CI_BUILD_REF` before running the scanner will disable the gitlab
-plugin and thus allow you to publish the results to sonarqube.
+Note how we've changed from `issues` to `publish` in `SONAR_ANALYSIS_MODE`.
 
 ### Full .gitlab-ci.yaml with preview + publish
 
@@ -68,24 +73,23 @@ sonarqube:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
-    SONAR_ANALYSIS_MODE: "issues"
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: issues
   script:
-  - /usr/bin/sonar-scanner-run.sh
+  - sonar-gitlab-scanner
 
 sonarqube-reports:
   stage: analysis
   image: ciricihq/gitlab-sonar-scanner
   variables:
-    SONAR_URL: "http://your.sonarqube.server:9000"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
-    SONAR_ANALYSIS_MODE: "publish"
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: publish
   script:
-  - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+  - sonar-gitlab-scanner
 ~~~
 
-## Available environment variables
+Available environment variables
+-------------------------------
 
 Can be checked in the official documentation: https://docs.sonarqube.org/display/SONARQUBE43/Analysis+Parameters
 
@@ -106,8 +110,33 @@ Can be checked in the official documentation: https://docs.sonarqube.org/display
 - `CI_BUILD_REF`: See [ci/variables][variables]
 - `CI_BUILD_REF_NAME`: See [ci/variables][variables]
 
+### Defining custom sonar-scanner options
+
+You can pass any additional option to the `gitlab-sonar-scanner` binnary, if needed:
+
+~~~yaml
+sonarqube-reports:
+  image: ciricihq/gitlab-sonar-scanner
+  variables:
+    SONAR_URL: http://your.sonarqube.server
+    SONAR_ANALYSIS_MODE: publish
+  script:
+  - sonar-gitlab-scanner -Dsonar.custom.param=whatever -Dsonar.custom.param2=whichever
+~~~
+
+
+LICENSE
+=======
+
+All the code contained in this repository is licensed under a GNU-GPLv3 license.
+
+Copyright Alvarium.io 2017-2018.
+
+See [LICENSE][] for more details
+
 [sonar gitlab plugin]: https://github.com/gabrie-allaigre/sonar-gitlab-plugin
 [variables]: https://docs.gitlab.com/ce/ci/variables
 [docker hub]: https://hub.docker.com/r/ciricihq/gitlab-sonar-scanner
+[LICENSE]: ./LICENSE
 
 [docker hub svg]: https://img.shields.io/docker/pulls/ciricihq/gitlab-sonar-scanner.svg

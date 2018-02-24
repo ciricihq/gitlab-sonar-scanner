@@ -12,9 +12,7 @@ if ! grep -q sonar.projectKey "sonar-project.properties"; then
   if [ -z ${SONAR_PROJECT_KEY+x} ]; then
     SONAR_PROJECT_KEY=$CI_PROJECT_NAME
   fi
-  if [ ! -z ${SONAR_PROJECT_KEY+x} ]; then
-    COMMAND="$COMMAND -Dsonar.projectKey=$SONAR_PROJECT_KEY"
-  fi
+  COMMAND="$COMMAND -Dsonar.projectKey=$SONAR_PROJECT_KEY"
 fi
 
 if [ -z ${SONAR_PROJECT_VERSION+x} ]; then

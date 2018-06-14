@@ -52,7 +52,7 @@ if [ ! -z ${SONAR_ENCODING+x} ]; then
 fi
 
 if [ ! -z ${SONAR_BRANCH+x} ]; then
-  COMMAND="$COMMAND -Dsonar.branch=$SONAR_BRANCH"
+  COMMAND="$COMMAND -Dsonar.branch.name=$SONAR_BRANCH"
 fi
 
 # analysis by default

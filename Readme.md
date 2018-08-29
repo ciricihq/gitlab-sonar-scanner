@@ -76,7 +76,7 @@ sonarqube:
     SONAR_URL: http://your.sonarqube.server
     SONAR_ANALYSIS_MODE: issues
   script:
-  - sonar-gitlab-scanner
+  - gitlab-sonar-scanner
 
 sonarqube-reports:
   stage: analysis
@@ -85,7 +85,7 @@ sonarqube-reports:
     SONAR_URL: http://your.sonarqube.server
     SONAR_ANALYSIS_MODE: publish
   script:
-  - sonar-gitlab-scanner
+  - gitlab-sonar-scanner
 ~~~
 
 Available environment variables
@@ -121,7 +121,7 @@ sonarqube-reports:
     SONAR_URL: http://your.sonarqube.server
     SONAR_ANALYSIS_MODE: publish
   script:
-  - sonar-gitlab-scanner -Dsonar.custom.param=whatever -Dsonar.custom.param2=whichever
+  - gitlab-sonar-scanner -Dsonar.custom.param=whatever -Dsonar.custom.param2=whichever
 ~~~
 
 

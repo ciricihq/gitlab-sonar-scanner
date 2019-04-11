@@ -81,4 +81,4 @@ if [ $SONAR_ANALYSIS_MODE == "publish" ]; then
   unset CI_BUILD_REF
 fi
 
-$COMMAND $1
+$COMMAND $@

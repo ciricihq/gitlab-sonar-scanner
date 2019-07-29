@@ -15,6 +15,8 @@ RUN \
 
 RUN \
     apk add --no-cache nodejs && \
+    apk add --no-cache npm && \
+    npm install -g typescript && \
     ls -lha /usr/bin/sonar* && \
     ln -s /usr/bin/sonar-scanner-run.sh /usr/bin/gitlab-sonar-scanner
 
